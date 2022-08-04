@@ -1,0 +1,22 @@
+﻿<h3>Question:</h3>
+<p>@ViewBag.Message5</p>
+<div>Previous Comments:</div>
+
+<ul>
+    @foreach(Comment c in ViewBag.Message.Comments)
+    {
+        <li>@c.CommentString</li>
+    }
+</ul>
+
+<form asp-action="Comment" method="post">
+    <p>
+        <div>COMMENT:</div>
+        <div>
+            <textarea name="comment" style="width: 100%; height: 400px"></textarea>
+            <input type="hidden" value="@ViewBag.Message2" name="questionId" />
+            <input type="hidden" value="@ViewBag.Message3" name="answerId" />
+        </div>
+        <button type="submit">POST COMMENT</button>
+    </p>
+</form>

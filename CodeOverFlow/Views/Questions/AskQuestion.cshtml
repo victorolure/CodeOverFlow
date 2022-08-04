@@ -1,0 +1,13 @@
+﻿<h1>Post a Question</h1>
+<form asp-action="AskQuestion" method="post">
+   <p>
+     <div>TITLE:</div>
+     <input type="text" name="title"/>
+   </p>  
+   <div>
+     <div>QUESTION: </div>
+     <textarea name="question" style="width: 100%; height: 400px"></textarea>
+   </div>
+   <select required="Required" multiple asp-items="@ViewBag.Message" name="tagIDs"></select>
+   <button type="submit">POST</button>
+</form>

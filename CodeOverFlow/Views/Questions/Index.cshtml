@@ -1,0 +1,71 @@
+﻿@model IEnumerable<CodeOverFlow.Models.Question>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form asp-action="Index">
+    <select name="sortBy">
+        <option value="sortByDate">Sort by Date</option>
+        <option value="sortByAnswers">Sort by Number of Answers</option>
+    </select>
+    <button type="submit">Sort</button>
+</form>
+<h1>Index</h1>
+
+<p>
+    <a asp-action="AskQuestion">Ask Question</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                Question
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateCreated)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.QuestionString)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateCreated)
+            </td>
+            <td>
+                <form asp-controller="Answers" asp-action="Answer" method="get">
+                    <input type="hidden" value="@item.Id" name="questionId"/>
+                    <button type="submit">Answer</button>
+                </form>
+            </td>
+             <td>
+                <form asp-controller="Comments" asp-action="Comment" method="get">
+                    <input type="hidden" value="@item.Id" name="questionId"/>
+                    <button type="submit">Comment</button>
+                </form>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+<form asp-action="Index">
+    <select name="page">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="2">3</option>
+    </select>
+    <button type="submit">Switch Page>></button>
+</form>

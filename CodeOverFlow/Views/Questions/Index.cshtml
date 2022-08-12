@@ -1,11 +1,22 @@
 ﻿@model IEnumerable<CodeOverFlow.Models.Question>
-
+@if (ViewBag.Message2 == true)
+{
+    <form asp-controller="Admin" asp-action="Index" method="get">
+        <button type="submit">ADMIN PAGE</button>
+    </form>
+}
+else
+ {
+    <div></div>
+ }
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<form asp-action="Index">
+<div>
+    <h4>Reputation: @ViewBag.Message</h4>
+</div>
+<form asp-action="Index" method="get">
     <select name="sortBy">
         <option value="sortByDate">Sort by Date</option>
         <option value="sortByAnswers">Sort by Number of Answers</option>
@@ -56,16 +67,22 @@
                     <button type="submit">Comment</button>
                 </form>
             </td>
+            <td>
+                <form asp-action="Details" method="get">
+                    <input type="hidden" value="@item.Id" name="questionId"/>
+                    <button type="submit">Details</button>
+                </form>
+            </td>
         </tr>
 }
     </tbody>
 </table>
 
-<form asp-action="Index">
+<form asp-action="Index" method="get">
     <select name="page">
         <option value="1">1</option>
         <option value="2">2</option>
-        <option value="2">3</option>
+        <option value="3">3</option>
     </select>
     <button type="submit">Switch Page>></button>
 </form>

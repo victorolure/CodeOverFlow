@@ -7,7 +7,9 @@
         public string AnswerString { get; set; }
         public ApplicationUser User { get; set; }
         public Question Question { get; set; }
-
         public ICollection<Comment>Comments { get; set; }
+
+        public bool IsCorrect { get; set; } = false;
+        public ICollection<Vote>? Votes { get; set; } = new HashSet<Vote>();
     }
 }

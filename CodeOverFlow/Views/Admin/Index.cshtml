@@ -1,0 +1,49 @@
+﻿@model IEnumerable<CodeOverFlow.Models.Question>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>ALL QUESTIONS</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.QuestionString)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateCreated)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.QuestionString)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateCreated)
+            </td>
+            <td>
+                <form asp-action="DeleteQuestion" method="post">
+                    <input type="hidden" value="@item.Id" name="questionId"/>
+                    <button type="submit">Delete</button>
+                </form>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

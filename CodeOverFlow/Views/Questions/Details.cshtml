@@ -1,35 +1,107 @@
 ﻿@model CodeOverFlow.Models.Question
 
-@{
-    ViewData["Title"] = "Details";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
-
-<h1>Details</h1>
 
 <div>
     <h4>Question</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Title)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.QuestionString)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.QuestionString)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DateCreated)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DateCreated)
-        </dd>
-    </dl>
+    <p>@Model.QuestionString</p>
+    <form asp-controller="Votes" asp-action="CastVote" method="post">
+        <input type="hidden" name="voteValue" value="true" />
+        <input type="hidden" name="questionId" value="@Model.Id" />
+        <button type="submit" style="width: 5%; height: 30px">UpVote</button>
+    </form>
+    <h4>@($"Upvotes: {Model.Votes.Where(v=> v.IsVote== true).ToList().Count}")</h4>
+    <form asp-controller="Votes" asp-action="CastVote" method="post">
+        <input type="hidden" name="voteValue" value="false" />
+        <input type="hidden" name="questionId" value="@Model.Id" />
+        <button type="submit">DownVote</button>
+    </form>
+    <h4>@($"Downvotes: {Model.Votes.Where(v=> v.IsVote== false).ToList().Count}")</h4>
+    <ol>
+        @foreach (Answer a in Model.Answers)
+        {
+            if (Model.User == ViewBag.Message)
+            {
+                if (@a.IsCorrect == true)
+                {
+                    <h4>Correct Answer</h4>
+                    <li>@a.AnswerString  answerUserRep: @a.User.Reputation</li>
+                    <form asp-controller="Votes" asp-action="CastVote" method="post">
+                        <input type="hidden" name="voteValue" value="true" />
+                        <input type="hidden" name="answerId" value="@a.Id" />
+                        <button type="submit">UpVote</button>
+                    </form>
+                    <h4>@($"Upvotes: {a.Votes.Where(v=> v.IsVote== true).ToList().Count}")</h4>
+                    <form asp-controller="Votes" asp-action="CastVote" method="post">
+                        <input type="hidden" name="voteValue" value="false" />
+                        <input type="hidden" name="answerId" value="@a.Id" />
+                        <button type="submit">DownVote</button>
+                    </form>
+                    <h4>@($"Downvotes: {a.Votes.Where(v=> v.IsVote== false).ToList().Count} ")</h4>
+
+                }
+                else
+                {
+                    <li>@a.AnswerString  answerUserRep: @a.User.Reputation</li>
+                    <form asp-controller="Votes" asp-action="CastVote" method="post">
+                        <input type="hidden" name="voteValue" value="true" />
+                        <input type="hidden" name="answerId" value="@a.Id" />
+                        <button type="submit">UpVote</button>
+                    </form>
+                    <h4>@($"Upvotes: {a.Votes.Where(v=> v.IsVote== true).ToList().Count}")</h4>
+                    <form asp-controller="Votes" asp-action="CastVote" method="post">
+                        <input type="hidden" name="voteValue" value="false" />
+                        <input type="hidden" name="answerId" value="@a.Id" />
+                        <button type="submit">DownVote</button>
+                    </form>
+                    <h4>@($"Downvotes: {a.Votes.Where(v=> v.IsVote== false).ToList().Count} ")</h4>
+                    <form asp-controller="Answers" asp-action="MarkAnswer">
+                        <input type="hidden" name="answerId" value="@a.Id" />
+                        <input type="hidden" name="markValue" value="true" />
+                        <button>Mark Correct</button>
+                    </form>
+                }
+            }
+            else
+            {
+                if (@a.IsCorrect == true)
+                {
+                    <h4>Correct Answer</h4>
+                    <li>@a.AnswerString  answerUserRep: @a.User.Reputation</li>
+                    <form asp-controller="Votes" asp-action="CastVote" method="post">
+                        <input type="hidden" name="voteValue" value="true" />
+                        <input type="hidden" name="answerId" value="@a.Id" />
+                        <button type="submit">UpVote</button>
+                    </form>
+                    <h4>@($"Upvotes: {a.Votes.Where(v=> v.IsVote== true).ToList().Count}")</h4>
+                    <form asp-controller="Votes" asp-action="CastVote" method="post">
+                        <input type="hidden" name="voteValue" value="false" />
+                        <input type="hidden" name="answerId" value="@a.Id" />
+                        <button type="submit">DownVote</button>
+                    </form>
+                    <h4>@($"Downvotes: {a.Votes.Where(v=> v.IsVote== false).ToList().Count} ")</h4>
+                }
+                else
+                {
+                    <li>@a.AnswerString  answerUserRep: @a.User.Reputation</li>
+                    <form asp-controller="Votes" asp-action="CastVote" method="post">
+                        <input type="hidden" name="voteValue" value="true" />
+                        <input type="hidden" name="answerId" value="@a.Id" />
+                        <button type="submit">UpVote</button>
+                    </form>
+                    <h4>@($"Upvotes: {a.Votes.Where(v=> v.IsVote== true).ToList().Count}")</h4>
+                    <form asp-controller="Votes" asp-action="CastVote" method="post">
+                        <input type="hidden" name="voteValue" value="false" />
+                        <input type="hidden" name="answerId" value="@a.Id" />
+                        <button type="submit">DownVote</button>
+                    </form>
+                    <h4>@($"Downvotes: {a.Votes.Where(v=> v.IsVote== false).ToList().Count} ")</h4>
+                }
+            }
+
+
+        }
+    </ol>
+    <p>@ViewBag.Message</p>
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |

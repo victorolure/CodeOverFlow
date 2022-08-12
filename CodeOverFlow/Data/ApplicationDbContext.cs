@@ -16,5 +16,9 @@ namespace CodeOverFlow.Data
         public DbSet<CodeOverFlow.Models.Comment>? Comment { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<QuestionTag> QuestionTags { get; set; }
+
+        public DbSet<Vote> Votes { get; set; }
+
+        
     }
 }

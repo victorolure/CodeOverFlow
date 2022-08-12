@@ -11,5 +11,7 @@
         public ICollection<Comment>? Comments { get; set; }
 
         public ICollection<Tag>? Tags { get; set; } = new HashSet<Tag>();
+
+        public ICollection<Vote>? Votes { get; set; } = new HashSet<Vote>(); 
     }
 }

@@ -69,43 +69,36 @@ namespace CodeOverFlow.Controllers
         // GET: Questions
         public async Task<IActionResult> Index(string?sortBy, int? page)
         {
-            
+            string userName = User.Identity.Name;
+            ApplicationUser user = await _userManager.FindByNameAsync(userName);            
+            bool isInRole = await _userManager.IsInRoleAsync(user, "Admin");
+            ViewBag.Message2 = isInRole;
+            ViewBag.Message = user.Reputation;
             int pageNumber = page ?? 1;
             IQueryable<Question> questions =  _context.Question.Include(q=> q.Answers);
-            if (sortBy == null)
+            if(sortBy == "sortByDate")
             {
-                questions = questions.OrderBy(q=>q.Id);
-                return View(questions.ToList().ToPagedList(pageNumber, 3));
-            }else if(sortBy == "sortByDate")
-            {
-                questions = questions.OrderBy(q => q.DateCreated);
-                return View(questions.ToList().ToPagedList(pageNumber, 3));
+                questions = questions.OrderByDescending(q => q.DateCreated);
+                return View(questions.ToList().ToPagedList(pageNumber, 5));
             }
             else if(sortBy == "sortByAnswers")
             {
                 questions = questions.OrderByDescending(q => q.Answers.Count);
-                return View(questions.ToList().ToPagedList(pageNumber, 3));
+                return View(questions.ToList().ToPagedList(pageNumber, 5));
             }
-     
-            return View(questions.ToList().ToPagedList(pageNumber, 3));
-                          
+
+            questions = questions.OrderBy(q => q.Id);
+            return View(questions.ToList().ToPagedList(pageNumber, 5));
+
         }
 
         // GET: Questions/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? questionId)
         {
-            if (id == null || _context.Question == null)
-            {
-                return NotFound();
-            }
-
-            var question = await _context.Question
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (question == null)
-            {
-                return NotFound();
-            }
-
+            string userName = User.Identity.Name;
+            ApplicationUser user = await _userManager.FindByNameAsync(userName);
+            ViewBag.Message = user;
+            Question question = await _context.Question.Include(q=> q.Comments).Include(q=> q.Votes).Include(q=> q.Answers).ThenInclude(a=> a.Votes).Include(q=> q.Answers.OrderByDescending(a=> a.IsCorrect)).ThenInclude(a=> a.User).FirstAsync(q => q.Id == questionId);
             return View(question);
         }
 

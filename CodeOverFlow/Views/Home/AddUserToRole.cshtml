@@ -1,0 +1,10 @@
+﻿@using CodeOverFlow.Models.ViewModels
+@model UserAndRoleSelectViewModel
+
+<h3>@Model.Message</h3>
+<h2>Add User To Role</h2>
+<form asp-action="AddUserToRole" method="post">
+    <select required="Required" asp-items="@Model.UserSelect" name="userId"></select>
+    <select required="Required" asp-items="@Model.RoleSelect" name="roleId"></select>
+    <button type="submit">AddUserToRole</button>
+</form>

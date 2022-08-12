@@ -4,6 +4,7 @@ using CodeOverFlow.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CodeOverFlow.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220810204915_addIsCorrectToAnswer")]
+    partial class addIsCorrectToAnswer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,7 +54,7 @@ namespace CodeOverFlow.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Answer", (string)null);
+                    b.ToTable("Answer");
                 });
 
             modelBuilder.Entity("CodeOverFlow.Models.ApplicationUser", b =>
@@ -155,7 +157,7 @@ namespace CodeOverFlow.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Comment", (string)null);
+                    b.ToTable("Comment");
                 });
 
             modelBuilder.Entity("CodeOverFlow.Models.Question", b =>
@@ -184,7 +186,7 @@ namespace CodeOverFlow.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Question", (string)null);
+                    b.ToTable("Question");
                 });
 
             modelBuilder.Entity("CodeOverFlow.Models.QuestionTag", b =>
@@ -207,7 +209,7 @@ namespace CodeOverFlow.Data.Migrations
 
                     b.HasIndex("TagId");
 
-                    b.ToTable("QuestionTags", (string)null);
+                    b.ToTable("QuestionTags");
                 });
 
             modelBuilder.Entity("CodeOverFlow.Models.Tag", b =>
@@ -229,7 +231,7 @@ namespace CodeOverFlow.Data.Migrations
 
                     b.HasIndex("QuestionId");
 
-                    b.ToTable("Tags", (string)null);
+                    b.ToTable("Tags");
                 });
 
             modelBuilder.Entity("CodeOverFlow.Models.Vote", b =>
@@ -260,7 +262,7 @@ namespace CodeOverFlow.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Votes", (string)null);
+                    b.ToTable("Votes");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

@@ -8,9 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using CodeOverFlow.Data;
 using CodeOverFlow.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CodeOverFlow.Controllers
 {
+    [Authorize]
     public class AnswersController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -44,10 +46,31 @@ namespace CodeOverFlow.Controllers
                 user.Answers.Add(newAnswer);
                 _context.Answer.Add(newAnswer);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "Questions");
+                return RedirectToAction("Details", "Questions", new {  questionId = question.Id});
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("Details", "Questions", new { questionId = question.Id });
 
+        }
+
+        public async Task<IActionResult> MarkAnswer(int? answerId, bool markValue)
+        {
+            Answer answer = await _context.Answer.Include(a=> a.Question).ThenInclude(q=> q.Answers).Include(a=> a.Question).FirstAsync(a => a.Id == answerId);
+            Question question = answer.Question;
+            if(!question.Answers.Any(a=> a.IsCorrect == true))
+            {
+                question.Answers.First(a => a.Id == answerId).IsCorrect = true;
+                _context.Answer.First(a => a.Id == answerId).IsCorrect = true;
+            }
+            else
+            {
+                Answer CurrentRightAnswer = question.Answers.First(a => a.IsCorrect == true);
+                _context.Answer.First(a => a.Id == CurrentRightAnswer.Id).IsCorrect = false;
+                CurrentRightAnswer.IsCorrect = false;
+                question.Answers.First(a => a.Id == answerId).IsCorrect = true;
+                _context.Answer.First(a => a.Id == answerId).IsCorrect = true;
+            }
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Details","Questions",  new {questionId=  question.Id });
         }
 
         // GET: Answers

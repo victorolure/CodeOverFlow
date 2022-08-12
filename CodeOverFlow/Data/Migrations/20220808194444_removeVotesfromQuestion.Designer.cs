@@ -4,6 +4,7 @@ using CodeOverFlow.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CodeOverFlow.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220808194444_removeVotesfromQuestion")]
+    partial class removeVotesfromQuestion
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,9 +39,6 @@ namespace CodeOverFlow.Data.Migrations
                     b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("IsCorrect")
-                        .HasColumnType("bit");
-
                     b.Property<int>("QuestionId")
                         .HasColumnType("int");
 
@@ -52,7 +51,7 @@ namespace CodeOverFlow.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Answer", (string)null);
+                    b.ToTable("Answer");
                 });
 
             modelBuilder.Entity("CodeOverFlow.Models.ApplicationUser", b =>
@@ -96,9 +95,6 @@ namespace CodeOverFlow.Data.Migrations
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
-
-                    b.Property<int>("Reputation")
-                        .HasColumnType("int");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
@@ -155,7 +151,7 @@ namespace CodeOverFlow.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Comment", (string)null);
+                    b.ToTable("Comment");
                 });
 
             modelBuilder.Entity("CodeOverFlow.Models.Question", b =>
@@ -184,7 +180,7 @@ namespace CodeOverFlow.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Question", (string)null);
+                    b.ToTable("Question");
                 });
 
             modelBuilder.Entity("CodeOverFlow.Models.QuestionTag", b =>
@@ -207,7 +203,7 @@ namespace CodeOverFlow.Data.Migrations
 
                     b.HasIndex("TagId");
 
-                    b.ToTable("QuestionTags", (string)null);
+                    b.ToTable("QuestionTags");
                 });
 
             modelBuilder.Entity("CodeOverFlow.Models.Tag", b =>
@@ -229,38 +225,7 @@ namespace CodeOverFlow.Data.Migrations
 
                     b.HasIndex("QuestionId");
 
-                    b.ToTable("Tags", (string)null);
-                });
-
-            modelBuilder.Entity("CodeOverFlow.Models.Vote", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int?>("AnswerId")
-                        .HasColumnType("int");
-
-                    b.Property<bool?>("IsVote")
-                        .HasColumnType("bit");
-
-                    b.Property<int?>("QuestionId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AnswerId");
-
-                    b.HasIndex("QuestionId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Votes", (string)null);
+                    b.ToTable("Tags");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -469,27 +434,6 @@ namespace CodeOverFlow.Data.Migrations
                         .HasForeignKey("QuestionId");
                 });
 
-            modelBuilder.Entity("CodeOverFlow.Models.Vote", b =>
-                {
-                    b.HasOne("CodeOverFlow.Models.Answer", "Answer")
-                        .WithMany("Votes")
-                        .HasForeignKey("AnswerId");
-
-                    b.HasOne("CodeOverFlow.Models.Question", "Question")
-                        .WithMany("Votes")
-                        .HasForeignKey("QuestionId");
-
-                    b.HasOne("CodeOverFlow.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Answer");
-
-                    b.Navigation("Question");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -544,8 +488,6 @@ namespace CodeOverFlow.Data.Migrations
             modelBuilder.Entity("CodeOverFlow.Models.Answer", b =>
                 {
                     b.Navigation("Comments");
-
-                    b.Navigation("Votes");
                 });
 
             modelBuilder.Entity("CodeOverFlow.Models.ApplicationUser", b =>
@@ -564,8 +506,6 @@ namespace CodeOverFlow.Data.Migrations
                     b.Navigation("Comments");
 
                     b.Navigation("Tags");
-
-                    b.Navigation("Votes");
                 });
 #pragma warning restore 612, 618
         }

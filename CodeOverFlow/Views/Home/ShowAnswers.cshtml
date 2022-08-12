@@ -1,0 +1,103 @@
+﻿@model IEnumerable<CodeOverFlow.Models.Answer>
+
+@{
+    ViewData["Title"] = "ShowAnswers";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>ShowAnswers</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DateCreated)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AnswerString)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsCorrect)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            if(item.IsCorrect == true)
+            {
+                <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateCreated)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AnswerString)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsCorrect)
+                    <h4>correct answer</h4>
+                </td>
+                <td>
+                    <h4>Correct Answer</h4>
+                    <li>@item.AnswerString </li>
+                    <form asp-controller="Votes" asp-action="CastVote" method="post">
+                        <input type="hidden" name="voteValue" value="true" />
+                        <input type="hidden" name="answerId" value="@item.Id" />
+                        <button type="submit">UpVote</button>
+                    </form>
+                    <h4>@($"Upvotes: {item.Votes.Where(v=> v.IsVote== true).ToList().Count}")</h4>
+
+                </td>
+                <td>
+                    <form asp-controller="Votes" asp-action="CastVote" method="post">
+                        <input type="hidden" name="voteValue" value="false" />
+                        <input type="hidden" name="answerId" value="@item.Id" />
+                        <button type="submit">DownVote</button>
+                    </form>
+                    <h4>@($"Downvotes: {item.Votes.Where(v=> v.IsVote== false).ToList().Count} ")</h4>
+                </td>
+            </tr>
+            }
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateCreated)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AnswerString)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsCorrect)
+                </td>
+                <td>
+                    <h4>Correct Answer</h4>
+                    <li>@item.AnswerString </li>
+                    <form asp-controller="Votes" asp-action="CastVote" method="post">
+                        <input type="hidden" name="voteValue" value="true" />
+                        <input type="hidden" name="answerId" value="@item.Id" />
+                        <button type="submit">UpVote</button>
+                    </form>
+                    <h4>@($"Upvotes: {item.Votes.Where(v=> v.IsVote== true).ToList().Count}")</h4>
+
+                </td>
+                <td>
+                    <form asp-controller="Votes" asp-action="CastVote" method="post">
+                        <input type="hidden" name="voteValue" value="false" />
+                        <input type="hidden" name="answerId" value="@item.Id" />
+                        <button type="submit">DownVote</button>
+                    </form>
+                    <h4>@($"Downvotes: {item.Votes.Where(v=> v.IsVote== false).ToList().Count} ")</h4>
+                </td>
+                <td>
+                    <form asp-action="ShowComments" method="get">
+                        <button type="submit">Show Comments</button>
+                        <input type="hidden" name="questionId" value="@item.Question.Id"/>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

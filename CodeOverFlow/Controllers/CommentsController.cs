@@ -65,7 +65,11 @@ namespace CodeOverFlow.Controllers
                 question.Comments.Add(newComment);
                 _context.Comment.Add(newComment);
                 _context.SaveChanges();
-                return RedirectToAction("Index", "Questions");
+                question = await _context.Question.Include(q => q.Answers).Include(q => q.Comments).FirstAsync(q => q.Id == questionId);
+                ViewBag.Message = question;
+                ViewBag.Message2 = question.Id;
+                ViewBag.Message5 = question.QuestionString;
+                return View();
             }else if(answerId!= null && questionId == null)
             {
                 Answer answer = await _context.Answer.Include(a => a.Comments).FirstAsync(a => a.Id == answerId);
@@ -77,7 +81,13 @@ namespace CodeOverFlow.Controllers
                 user.Comments.Add(newComment);
                 _context.Comment.Add(newComment);
                 _context.SaveChanges();
-                return RedirectToAction("Index", "Questions");
+                answer = await _context.Answer.Include(a => a.Comments).Include(a => a.Question).FirstAsync(a => a.Id == answerId);
+                ViewBag.Message = answer;
+                ViewBag.Message3 = answer.Id;
+                ViewBag.Message5 = answer.Question.QuestionString;
+                return View();
+                
+                //return RedirectToAction("Index", "Questions");
             }
             return RedirectToAction("Index", "Questions");
            

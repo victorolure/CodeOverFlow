@@ -1,0 +1,55 @@
+﻿@model IEnumerable<CodeOverFlow.Models.Question>
+
+@{
+    ViewData["Title"] = "ViewQuestions";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>ViewQuestions</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.QuestionString)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateCreated)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.QuestionString)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateCreated)
+            </td>
+            <td>
+                <form asp-action="ShowComments" method="get">
+                    <button>View Comments</button>
+                    <input type="hidden" value="@item.Id" name="questionId"/>
+                </form>
+            </td>
+            <td>
+                <form asp-action="ShowAnswers" method="get">
+                    <button>View Answers</button>
+                    <input type="hidden" value="@item.Id" name="questionId"/>
+                </form>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
